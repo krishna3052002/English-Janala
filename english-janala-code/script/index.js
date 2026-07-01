@@ -40,27 +40,33 @@ function displayData(data) {
 //                     <div class="flex flex-row justify-between items-center">
 //                         <button class="btn"><i class="fa-solid fa-circle-info"></i></button>
 //                         <button class="btn"><i class="fa-solid fa-volume-high"></i></i></button>
-//                     </div>
+//                     </div>s
 //                 </div>`;
 //         lessonContainer.appendChild(lessonCard);
 
 //     }
 // }
+// document.getElementById("no-selected-lesson").classList.add("hidden");
+document.getElementById("word-card-container").classList.add("hidden");
 document.addEventListener("click", function (event) {
-    const target = event.target;
-    // const target= target.closest(".lesson");
-    // console.log(target);
-    if (target.classList.contains("lesson")) {
-        const levelNo = target.id.split("-")[1];
+
+
+    const lessonButton = event.target.closest(".lesson");
+
+    if (lessonButton) {
+        // document.getElementById("no-selected-lesson").style.display = "none";
+        // document.getElementById("word-card-container").style.display = "block";
+
+        document.getElementById("no-selected-lesson").classList.add("hidden");
+        document.getElementById("word-card-container").classList.remove("hidden");
+        const levelNo = lessonButton.id.split("-")[1];
         getLessons().then((lessons) => {
-            // console.log(lessons);
-            // displayLesson(lessons);
             const wordCardContainer = document.getElementById("word-card-container");
             wordCardContainer.innerHTML = "";
+            let flag = false;
             for (const lesson of lessons) {
-
                 if (lesson.level == levelNo) {
-
+                    flag = true;
                     const wordCard = document.createElement("div");
                     wordCard.innerHTML = `<div class="card w-96 bg-base-100 card-xl shadow-sm p-8 space-y-8">
                     <div class="space-y-2">
@@ -74,12 +80,17 @@ document.addEventListener("click", function (event) {
                     </div>
                 </div>`;
                     wordCardContainer.appendChild(wordCard);
-
                 }
             }
-        });
-
+            if (flag === false) {
+                const wordCard = document.createElement("div");
+                wordCard.innerHTML = `<div class="font-semibold">There are no words in this lesson!</div>`;
+                wordCardContainer.appendChild(wordCard);
+            }
+            
+        })
     }
+
 })
 
 
