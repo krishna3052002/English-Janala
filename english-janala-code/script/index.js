@@ -20,77 +20,47 @@ function displayData(data) {
     lessonContainer.innerHTML = "";
     for (const level of data) {
         const lesson = document.createElement("div");
-        lesson.innerHTML = `<div ><a id="lesson-${level.level_no}" class=" lesson btn btn-outline btn-primary"><i class="fa-solid fa-book-open"></i>Lesson-${level.level_no}</a></div>`;
+        lesson.innerHTML = `<div onclick="loadWord(${level.level_no})" ><a id="lesson-${level.level_no}" class=" lesson btn btn-outline btn-primary"><i class="fa-solid fa-book-open"></i>Lesson-${level.level_no}</a></div>`;
         lessonContainer.appendChild(lesson);
     }
 
 }
 
-// const displayLesson = (data) => {
-//     const lessonContainer = document.getElementById("word-card-container");
-//     lessonContainer.innerHTML = "";
-//     for (const lesson of data) {
-//         const lessonCard = document.createElement("div");
-//         lessonCard.innerHTML = `<div class="card w-96 bg-base-100 card-xl shadow-sm p-8 space-y-8">
-//                     <div class="space-y-2">
-//                         <p class="font-bold text-xl text-center">Eager</p>
-//                         <p class="text-center">Meaning/Pronounciation</p>
-//                         <p class="text-center bangla-font font-bold">"আগ্রহী / ইগার"</p>
-//                     </div>
-//                     <div class="flex flex-row justify-between items-center">
-//                         <button class="btn"><i class="fa-solid fa-circle-info"></i></button>
-//                         <button class="btn"><i class="fa-solid fa-volume-high"></i></i></button>
-//                     </div>s
-//                 </div>`;
-//         lessonContainer.appendChild(lessonCard);
-
-//     }
-// }
-// document.getElementById("no-selected-lesson").classList.add("hidden");
 document.getElementById("word-card-container").classList.add("hidden");
-document.addEventListener("click", function (event) {
 
+const loadWord = (level) => {
+    url = `https://openapi.programming-hero.com/api/level/${level}`;
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            displayWordCard(data.data);
+        });
+}
 
-    const lessonButton = event.target.closest(".lesson");
-
-    if (lessonButton) {
-        // document.getElementById("no-selected-lesson").style.display = "none";
-        // document.getElementById("word-card-container").style.display = "block";
-
-        document.getElementById("no-selected-lesson").classList.add("hidden");
-        document.getElementById("word-card-container").classList.remove("hidden");
-        const levelNo = lessonButton.id.split("-")[1];
-        getLessons().then((lessons) => {
-            const wordCardContainer = document.getElementById("word-card-container");
-            wordCardContainer.innerHTML = "";
-            let flag = false;
-            for (const lesson of lessons) {
-                if (lesson.level == levelNo) {
-                    flag = true;
-                    const wordCard = document.createElement("div");
-                    wordCard.innerHTML = `<div class="card w-96 bg-base-100 card-xl shadow-sm p-8 space-y-8">
+function displayWordCard(data) {
+    document.getElementById("word-card-container").classList.remove("hidden");
+    document.getElementById("no-selected-lesson").classList.add("hidden");
+    const wordCardContainer = document.getElementById("word-card-container");
+    wordCardContainer.innerHTML = "";
+    if (data.length === 0) {
+        wordCardContainer.innerHTML = `<p class="text-center text-2xl font-bold">No words found for this lesson.</p>`;
+    }
+    else {
+        for (const word of data) {
+            const wordCard = document.createElement("div");
+            wordCard.innerHTML = `<div class="card w-96 bg-base-100 card-xl shadow-sm p-8 space-y-8">
                     <div class="space-y-2">
-                        <p class="font-bold text-xl text-center">${lesson.word}</p>
-                        <p class="text-center">${lesson.pronunciation}</p>
-                        <p class="text-center bangla-font font-bold">${lesson.meaning}</p>
+                        <p class="font-bold text-xl text-center">${word.word}</p>
+                        <p class="text-center">${word.pronunciation}</p>
+                        <p class="text-center bangla-font font-bold">${word.meaning}</p>
                     </div>
                     <div class="flex flex-row justify-between items-center">
                         <button class="btn"><i class="fa-solid fa-circle-info"></i></button>
                         <button class="btn"><i class="fa-solid fa-volume-high"></i></i></button>
                     </div>
                 </div>`;
-                    wordCardContainer.appendChild(wordCard);
-                }
-            }
-            if (flag === false) {
-                const wordCard = document.createElement("div");
-                wordCard.innerHTML = `<div class="font-semibold">There are no words in this lesson!</div>`;
-                wordCardContainer.appendChild(wordCard);
-            }
-            
-        })
+            wordCardContainer.appendChild(wordCard);
+        }
     }
 
-})
-
-
+}
