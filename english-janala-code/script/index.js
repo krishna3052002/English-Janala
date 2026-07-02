@@ -20,10 +20,20 @@ function displayData(data) {
     lessonContainer.innerHTML = "";
     for (const level of data) {
         const lesson = document.createElement("div");
-        lesson.innerHTML = `<div onclick="loadWord(${level.level_no})" ><a id="lesson-${level.level_no}" class=" lesson btn btn-outline btn-primary"><i class="fa-solid fa-book-open"></i>Lesson-${level.level_no}</a></div>`;
+        lesson.innerHTML = `<button id="lesson-btn-${level.level_no}" onclick="loadWord(${level.level_no})" class="btn btn-outline btn-primary lesson-btn" ><i class="fa-solid fa-book-open"></i>Lesson-${level.level_no}</button>`;
         lessonContainer.appendChild(lesson);
     }
 
+}
+
+function removeActiveClass() {
+    const lessonButtons = document.querySelectorAll(".lesson-btn");
+    lessonButtons.forEach(btn => {
+        btn.classList.remove("active");
+    });
+    lessonButtons.forEach(btn => {
+        btn.classList.remove("active");
+    })
 }
 
 document.getElementById("word-card-container").classList.add("hidden");
@@ -33,7 +43,11 @@ const loadWord = (level) => {
     fetch(url)
         .then(res => res.json())
         .then(data => {
+            const lessonButton = document.getElementById(`lesson-btn-${level}`);
+            removeActiveClass();
+            lessonButton.classList.add("active");
             displayWordCard(data.data);
+
         });
 }
 
@@ -50,9 +64,9 @@ function displayWordCard(data) {
             const wordCard = document.createElement("div");
             wordCard.innerHTML = `<div class="card w-96 bg-base-100 card-xl shadow-sm p-8 space-y-8">
                     <div class="space-y-2">
-                        <p class="font-bold text-xl text-center">${word.word}</p>
-                        <p class="text-center">${word.pronunciation}</p>
-                        <p class="text-center bangla-font font-bold">${word.meaning}</p>
+                        <p class="font-bold text-xl text-center">${word.word ? word.word : "Word not found"}</p>
+                        <p class="text-center">${word.pronunciation ? word.pronunciation : "Pronunciation not found"}</p>
+                        <p class="text-center bangla-font font-bold">${word.meaning ? word.meaning : "Meaning not found"}</p>
                     </div>
                     <div class="flex flex-row justify-between items-center">
                         <button class="btn"><i class="fa-solid fa-circle-info"></i></button>
