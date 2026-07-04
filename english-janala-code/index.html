@@ -95,9 +95,26 @@
             <div id="lesson-container" class="flex flex-wrap gap-6 justify-center">
                 <!-- Here all the level buttons will be displayed -->
             </div>
+
+            <!-- Search Bar -->
+            <div class="join">
+                <div>
+                    <label class="input validator join-item">
+                      
+                        <input id="search-item" type="text" placeholder="Search words..." required />
+                    </label>
+                    <div class="validator-hint hidden">Enter valid email address</div>
+                </div>
+                <button id="search-btn" class="btn btn-neutral join-item">Search</button>
+            </div>
+
+
+            <div class="flex justify-center items-center mt-10 hidden" id="loading">
+                <span class="loading loading-bars loading-xl"></span>
+            </div>
             <div id="word-card-container"
                 class=" bg-[#e1d6d63e] rounded-3xl w-full flex flex-wrap justify-items-center justify-center p-10 space-x-4 space-y-3">
-                    <!-- Here all the word cards will be displayed -->
+                <!-- Here all the word cards will be displayed -->
             </div>
             <div id="no-selected-lesson"
                 class="bg-[#e1d6d63e] rounded-3xl w-full flex flex-col items-center p-10 space-y-3">
@@ -106,6 +123,32 @@
             </div>
 
         </Section>
+
+
+        <!-- Open the modal using ID.showModal() method -->
+        <!-- <button class="btn" onclick="my_modal_5.showModal()">open modal</button> -->
+        <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
+            <div class="modal-box">
+                <div id="word-details-container" class="space-y-4">
+                    <h3 class="text-lg font-bold">${data.word ? data.word : "Word not found"}(<i
+                            class="fa-solid fa-microphone-lines"></i>${data.pronunciation}) </h3>
+                    <p class="bangla-font font-bold">Meaning</p>
+                    <p>${data.meaning ? data.meaning : "Meaning not found"}</p>
+                    <p class="bangla-font font-bold">Example</p>
+                    <p>${data.sentence ? data.sentence : "Sentence not found"}</p>
+                    <p class="bangla-font font-bold">সমার্থক শব্দ গুলো</p>
+                    <div>
+                    </div>
+                </div>
+
+                <div class="modal-action">
+                    <form method="dialog">
+                        <!-- if there is a button in form, it will close the modal -->
+                        <button class="btn">Close</button>
+                    </form>
+                </div>
+            </div>
+        </dialog>
 
         <!-- Frequently Asked Questions -->
 
@@ -170,7 +213,3 @@
 </body>
 
 </html>
-
-
-
-
