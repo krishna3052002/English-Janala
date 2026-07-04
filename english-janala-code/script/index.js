@@ -119,13 +119,16 @@ const displayWordDetails = (data) => {
                     </div>`;
 }
 
+// Word Pronunciation Functionality
+function pronounceWord(word) {
+  const utterance = new SpeechSynthesisUtterance(word);
+  utterance.lang = "en-EN"; // English
+  window.speechSynthesis.speak(utterance);
+}
 
 document.getElementById("word-card-container").classList.add("hidden");
 // display word card
 function displayWordCard(data) {
-
-
-
     const wordCardContainer = document.getElementById("word-card-container");
     wordCardContainer.innerHTML = "";
     if (data.length === 0) {
@@ -145,7 +148,7 @@ function displayWordCard(data) {
                     </div>
                     <div class="flex flex-row justify-between items-center">
                         <button onclick="loadWordDetails(${word.id})" class="btn"><i class="fa-solid fa-circle-info"></i></button>
-                        <button class="btn"><i class="fa-solid fa-volume-high"></i></i></button>
+                        <button onclick="pronounceWord('${word.word}')" class="btn"><i class="fa-solid fa-volume-high"></i></button>
                     </div>
                 </div>`;
             wordCardContainer.appendChild(wordCard);
@@ -173,5 +176,8 @@ document.getElementById("search-btn").addEventListener("click", function () {
             displayWordCard(filteredData);
         });
 });
+
+
+
 
 // my_modal_5.showModal()
